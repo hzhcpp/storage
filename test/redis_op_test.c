@@ -53,8 +53,38 @@ int main(int argc, char *argv[])
     if (retn == 0) {
         printf("get %s = %s\n", "FOO", value);
     }
+    
+    //lpush
+    retn = rop_list_push(conn,"MY_LIST","zhang3");
+    if(retn < 0){
+    printf("lpush error\n");
+    }
+    retn = rop_list_push(conn,"MY_LIST","li4");
+    if(retn < 0){
+    printf("lpush error\n");
+    }
+    retn = rop_list_push(conn,"MY_LIST","wang5");
+    if(retn < 0){
+    printf("lpush error\n");
+    }
+    
+    //lrange
+    int array_num = 0;
+    int count = 3;
+    //开辟3 个字符串空间
+    int i = 0;
+    RVALUES array = NULL;
+    array = malloc(count * VALUES_ID_SIZE);
+    retn = rop_range_list(conn,"MY_LIST",0,2,array,&array_num);
+    if(retn != -1){
+    	for(i = 0;i<array_num;i++){
+    		
+    		printf("%d:%s\n",i,array[i]);
+    		}
+    }
 
     //断开连接
+    free(array);
     rop_disconnect(conn);
 
 	return 0;
